@@ -324,6 +324,8 @@ async function showDetailsPlaylistUser(playlistID) {
         songTableBody.appendChild(row);
       }
       // evento per eliminare canzoni da playlist
+      const  button = document.getElementById('modPlaylistButton');
+
       document.querySelectorAll('.del-song').forEach(icon => {
         icon.addEventListener('click', async function() {
           const songId = this.getAttribute('song-id');
