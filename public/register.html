@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>register-snm</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="header">
+    <input type="checkbox" name="" id="">
+    <div class="hamburger-lines">
+        <span class="line line1"></span>
+        <span class="line line2"></span>
+        <span class="line line3"></span>
+    </div>
+    <a href="#" class="logo">SNM</a>
+    <nav class="navbar">
+      <a href="/">Home</a>
+      <a href="#">About</a>
+      <a href="#">Playlist</a>
+      <a href="/login" class="login-button">Login</a>
+    </nav>
+  </header>
+  <!-- END NAVBAR -->
+
+  <!-- FORM REGISTRATION -->
+  <div id="user-message">
+    <p id="message-text"></p>
+  </div>
+  <form id="form-log-reg" action="/user/register" method="post">
+      <h1>Register now</h1>
+      <label for="username">Username:</label>
+      <input type="text" placeholder="Enter username" id="username" name="username" required>
+      
+      <label for="email">Email:</label>
+      <input type="email" placeholder="Enter email" id="email" name="email" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" placeholder="Enter password" id="password" name="password" required>
+      
+      <label for="confirm_password">Conferma Password:</label>
+      <input type="password" placeholder="Confirm password" id="confirm_password" name="confirm_password" required>
+
+      <input type="submit" value="Registrati" class="login-button">
+
+      <a href="/redirect/login">Login now</a>
+
+  </form>
+  <!-- FORM REGISTRATION -->
+
+  <script>
+    //HANDLING ERRORS 
+    const messaggeUser = document.getElementById('user-message')
+    const textMessage = document.getElementById('message-text') 
+
+    async function handleResponse(response) {
+      messaggeUser.style.display = 'block'
+
+      //Dopo 3 secondi messaggio sparisce
+      setTimeout(function() {
+        messaggeUser.style.display = 'none';
+      }, 3000); 
+      
+      const data = await response.json(); //response dal server 
+
+      if (response.ok) {
+        if (data.error) {
+          //Errore
+          messaggeUser.style.backgroundColor = "red"
+          textMessage.innerText = data.error
+        } else if (data.success && data.redirectUrl) {
+          //Registrazione effettuata
+          window.location.href = data.redirectUrl;
+        }
+      } else {
+        // Se la risposta del server non è ok
+        messaggeUser.style.backgroundColor = "red"
+        textMessage.innerText = data.error
+        console.error(`Errore nella richiesta: ${response.status}`);
+      }
+    }
+
+    //Invio dati registrazione (previene comportamento di default del form)
+    document.getElementById('form-log-reg').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const requestBody = {};
+      formData.forEach((value, key) => {
+        requestBody[key] = value;
+      });
+
+      try {
+        const response = await fetch('/user/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        // Utilizza la funzione handleResponse per gestire la risposta dal server
+        handleResponse(response);
+      } catch (error) {
+        console.error('Errore durante la richiesta di registrazione:', error);
+      }
+    });
+  </script>
+</body>
+
+</html>
+
+
+
