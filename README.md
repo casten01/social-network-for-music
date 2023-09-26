@@ -51,4 +51,5 @@ University project, a Node.js web app based on spotify api, a social network whe
 - Eseguire `app.js` dal terminale con il comando:
   - `npm start`
 - Il sito sarà raggiungibile all'indirizzo [`http://localhost:5000/`](http://localhost:5000/)
+  
 ![JavaScript](https://img.shields.io/badge/JavaScript-Used-yellow.svg) ![HTML](https://img.shields.io/badge/HTML-Used-orange.svg) ![CSS](https://img.shields.io/badge/CSS-Used-blue.svg)
